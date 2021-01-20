@@ -804,6 +804,10 @@ const addPacDot = (boardCell) => {
   boardCell.classList.add("cell", "pac-dot");
   return boardCell;
 };
+const removePacDot = (boardCell) => {
+  boardCell.classList.remove("pac-dot");
+  return boardCell;
+};
 
 const addGhostLair = (boardCell) => {
   boardCell.classList.add("cell", "ghost-lair");
@@ -814,10 +818,21 @@ const addPowerPellet = (boardCell) => {
   boardCell.classList.add("cell", "power-pellet");
   return boardCell;
 };
+const removePowerPellet = (boardCell) => {
+  boardCell.classList.remove("power-pellet");
+  return boardCell;
+};
 
 const addEmptyCell = (boardCell) => {
   boardCell.classList.add("cell", "empty-cell");
   return boardCell;
+};
+
+const addPacman = (boardCell) => {
+  boardCell.classList.add("pacman");
+};
+const removePacman = (boardCell) => {
+  boardCell.classList.remove("pacman");
 };
 
 const createGameBoard = (layout) => {
@@ -844,3 +859,88 @@ const createGameBoard = (layout) => {
   });
 };
 createGameBoard(layout);
+
+let gameBoard = document.querySelectorAll(".cell");
+let pacmanPosition = 490;
+let packmanCell = gameBoard[pacmanPosition];
+addPacman(packmanCell);
+
+let isGameStarted = false;
+let currentDirection = 0;
+let nextDirection = 0;
+
+const startGame = () => {
+  isGameStarted = true;
+};
+
+const resetGame = () => {
+  isGameStarted = false;
+  currentDirection = 0;
+  nextDirection = 0;
+  grid.innerHTML = "";
+
+  createGameBoard(layout);
+  gameBoard = document.querySelectorAll(".cell");
+  pacmanPosition = 490;
+  packmanCell = gameBoard[pacmanPosition];
+  addPacman(packmanCell);
+
+  console.log("reset");
+};
+
+const controlPress = (e) => {
+  e = e || window.event;
+  const key = e.key;
+  switch (key) {
+    case "ArrowLeft":
+      nextDirection = -1;
+      break;
+    case "ArrowRight":
+      nextDirection = 1;
+      break;
+    case "ArrowUp":
+      nextDirection = -gridWidth;
+      break;
+    case "ArrowDown":
+      nextDirection = gridWidth;
+      break;
+    case "r":
+      resetGame();
+      break;
+  }
+  if (
+    (key === "ArrowLeft" && !isGameStarted) ||
+    (key === "ArrowRight" && !isGameStarted) ||
+    (key === "ArrowUp" && !isGameStarted) ||
+    (key === "ArrowDown" && !isGameStarted)
+  ) {
+    console.log("click");
+    movePacman();
+    startGame();
+  }
+};
+
+const movePacman = () => {
+  if (!isGameStarted) {
+    currentDirection = nextDirection;
+    nextDirection = 0;
+  }
+  let pacmanMoveIntervalID = setInterval(() => {
+    if (
+      !gameBoard[pacmanPosition + currentDirection].classList.contains(
+        "wall"
+      ) &&
+      nextDirection === 0
+    ) {
+      removePacman(gameBoard[pacmanPosition]);
+      pacmanPosition += currentDirection;
+      addPacman(gameBoard[pacmanPosition]);
+    } else {
+      currentDirection = 0;
+      console.log("Hit wall");
+      clearInterval(pacmanMoveIntervalID);
+    }
+  }, 200);
+};
+
+document.addEventListener("keyup", controlPress);

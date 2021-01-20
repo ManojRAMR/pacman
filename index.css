@@ -8,12 +8,12 @@
   --cell-width: 15px;
   --cell-height: 15px;
 
-  --grid-color: rgb(213, 218, 218);
   --pac-dot-color: rgb(218, 83, 49);
-  --wall-color: rgb(27, 105, 101);
+  --wall-color: rgb(85, 55, 165);
   --ghost-lair-color: skyblue;
   --power-pellet-color: green;
-  --empty-cell-color: rgb(207, 202, 202);
+  --empty-cell-color: rgb(0, 0, 0);
+  --pacman-color: rgb(202, 165, 0);
 }
 
 html,
@@ -27,7 +27,7 @@ body {
   width: calc(var(--grid-width) + 4px);
   height: calc(var(--grid-height) + 4px);
   border: solid 2px black;
-  background: var(--grid-color);
+  background: var(--empty-cell-color);
   margin: 0 auto;
 }
 .cell {
@@ -39,7 +39,7 @@ body {
 }
 .pac-dot {
   background: var(--pac-dot-color);
-  border: 4px solid var(--grid-color);
+  border: 4px solid var(--empty-cell-color);
   border-radius: 50%;
 }
 .ghost-lair {
@@ -47,9 +47,14 @@ body {
 }
 .power-pellet {
   background: var(--power-pellet-color);
-  border: 2px solid var(--grid-color);
+  border: 2px solid var(--empty-cell-color);
   border-radius: 50%;
 }
 .empty-cell {
   background: var(--empty-cell-color);
+}
+.pacman {
+  background: var(--pacman-color);
+  border: 1.5px solid var(--empty-cell-color);
+  border-radius: 50%;
 }
